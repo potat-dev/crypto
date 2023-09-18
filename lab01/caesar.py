@@ -1,7 +1,7 @@
 def encrypt(plaintext, shift, alphabet):
     ciphertext = ""
-    for c in plaintext:
-        #
+    for char in plaintext:
+        c = char.lower()
         if c in alphabet:
             index = alphabet.index(c)
             shifted_index = (index + shift) % len(alphabet)

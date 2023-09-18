@@ -30,7 +30,7 @@ def calculate_score(vector1, vector2):
     return score
 
 
-def find_best_shift(ciphertext: str, alphabet: str, target_frequencies: dict):
+def find_shift(ciphertext: str, alphabet: str, target_frequencies: dict):
     def shift(lst, n):
         return lst[n:] + lst[:n]
 
