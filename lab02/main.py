@@ -1,4 +1,4 @@
-from cipher import *
+from lab02.vcc import *
 
 key = b'0123456789abcdef'
 

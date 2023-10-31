@@ -1,5 +1,5 @@
 import unittest
-from cipher import AES, encrypt_cbc, decrypt_cbc
+from lab02.aes import AES, encrypt_cbc, decrypt_cbc
 
 
 class TestBlock(unittest.TestCase):
