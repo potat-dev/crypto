@@ -217,7 +217,7 @@ class AES:
                 # XOR with first byte of R-CON, since the others bytes of R-CON are 0.
                 word[0] ^= r_con[i]
                 i += 1
-                
+
             elif len(master_key) == 32 and len(key_columns) % iteration_size == 4:
                 # Run word through S-box in the fourth iteration when using a
                 # 256-bit key.
@@ -271,7 +271,7 @@ class AES:
             inv_sub_bytes(cipher_state)
 
         add_round_key(cipher_state, self._key_matrices[0])
-        
+
         return matrix2bytes(cipher_state)
 
     def encrypt_ecb(self, plaintext):
@@ -559,9 +559,9 @@ def decrypt(key, ciphertext, workload=100000, mode=BlockMode.ECB):
     salt, ciphertext = ciphertext[:SALT_SIZE], ciphertext[SALT_SIZE:]
     key, hmac_key, iv = get_key_iv(key, salt, workload)
 
-    expected_hmac = new_hmac(hmac_key, salt + ciphertext, 'sha256').digest()
-    assert compare_digest(
-        hmac, expected_hmac), 'Ciphertext corrupted or tampered.'
+    expected_hmac = new_hmac(
+        hmac_key, salt + ciphertext, 'sha256').digest()
+    assert compare_digest(hmac, expected_hmac), 'Ciphertext corrupted'
 
     aes = AES(key)
     text = b''
