@@ -262,9 +262,9 @@ class VCC:
             s3_func(plain_state)
             add_round_key(plain_state, self._key_matrices[i])
 
-        sub_bytes(plain_state)
-        shift_rows(plain_state)
-        add_round_key(plain_state, self._key_matrices[-1])
+        # sub_bytes(plain_state)
+        # shift_rows(plain_state)
+        # add_round_key(plain_state, self._key_matrices[-1])
 
         return matrix2bytes(plain_state)
 
@@ -274,9 +274,9 @@ class VCC:
         assert len(ciphertext) == 16
         cipher_state = bytes2matrix(ciphertext)
 
-        add_round_key(cipher_state, self._key_matrices[-1])
-        inv_shift_rows(cipher_state)
-        inv_sub_bytes(cipher_state)
+        # add_round_key(cipher_state, self._key_matrices[-1])
+        # inv_shift_rows(cipher_state)
+        # inv_sub_bytes(cipher_state)
 
         for i in range(self.n_rounds - 1, 0, -1):
             # get sbox functions for current round
