@@ -2,23 +2,33 @@
 #define SHA256_H
 
 #include <array>
+#include <bitset>
 #include <cstdint>
 #include <string>
+
+typedef std::bitset<256> hash256_t;
+typedef std::bitset<16> hash16_t;
 
 class SHA256 {
    public:
     SHA256();
+
+    // Hash a string
     void update(const uint8_t* data, size_t length);
     void update(const std::string& data);
-    std::array<uint8_t, 32> digest();
 
-    static std::string toString(const std::array<uint8_t, 32>& digest);
+    // Get the hash
+    hash256_t digest();
+    hash16_t head(uint8_t length);
+    std::string hexdigest();
 
    private:
     uint8_t m_data[64];
     uint32_t m_blocklen;
     uint64_t m_bitlen;
     uint32_t m_state[8];  // A, B, C, D, E, F, G, H
+
+    std::array<uint8_t, 32> result;
 
     static constexpr std::array<uint32_t, 64> K = {
         0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -38,7 +48,7 @@ class SHA256 {
 
     void transform();
     void pad();
-    void revert(std::array<uint8_t, 32>& hash);
+    void revert();
 };
 
 #endif

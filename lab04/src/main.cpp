@@ -8,9 +8,7 @@ int main(int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
         SHA256 sha;
         sha.update(argv[i]);
-        std::array<uint8_t, 32> digest = sha.digest();
-
-        std::cout << SHA256::toString(digest) << std::endl;
+        std::cout << sha.hexdigest() << " - " << argv[i] << std::endl;
     }
 
     return EXIT_SUCCESS;

@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 
 constexpr std::array<uint32_t, 64> SHA256::K;
@@ -28,18 +29,12 @@ void SHA256::update(const uint8_t* data, size_t length) {
             m_blocklen = 0;
         }
     }
+
+    pad();
+    revert();
 }
 
 void SHA256::update(const std::string& data) { update(reinterpret_cast<const uint8_t*>(data.c_str()), data.size()); }
-
-std::array<uint8_t, 32> SHA256::digest() {
-    std::array<uint8_t, 32> hash;
-
-    pad();
-    revert(hash);
-
-    return hash;
-}
 
 uint32_t SHA256::rotr(uint32_t x, uint32_t n) { return (x >> n) | (x << (32 - n)); }
 
@@ -121,22 +116,43 @@ void SHA256::pad() {
     transform();
 }
 
-void SHA256::revert(std::array<uint8_t, 32>& hash) {
+void SHA256::revert() {
     // SHA uses big endian byte ordering
     // Revert all bytes
     for (uint8_t i = 0; i < 4; i++) {
         for (uint8_t j = 0; j < 8; j++) {
-            hash[i + (j * 4)] = (m_state[j] >> (24 - i * 8)) & 0x000000ff;
+            result[i + (j * 4)] = (m_state[j] >> (24 - i * 8)) & 0x000000ff;
         }
     }
 }
 
-std::string SHA256::toString(const std::array<uint8_t, 32>& digest) {
+hash256_t SHA256::digest() {
+    hash256_t hash;
+
+    for (int i = 0; i < 32; i++) {
+        hash <<= 8;
+        hash256_t byte = (unsigned long)result[i];
+        hash |= byte;
+    }
+
+    return hash;
+}
+
+hash16_t SHA256::head(uint8_t length) {
+    hash16_t mask = (1 << length) - 1;
+    hash16_t hash = result[0];
+    
+    hash <<= 8;
+    hash |= result[1];
+    return hash & mask;
+}
+
+std::string SHA256::hexdigest() {
     std::stringstream s;
     s << std::setfill('0') << std::hex;
 
     for (uint8_t i = 0; i < 32; i++) {
-        s << std::setw(2) << (unsigned int)digest[i];
+        s << std::setw(2) << (unsigned int)result[i];
     }
 
     return s.str();
