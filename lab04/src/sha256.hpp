@@ -1,25 +1,20 @@
-#ifndef SHA256_H
-#define SHA256_H
+#pragma once
 
 #include <array>
 #include <bitset>
 #include <cstdint>
 #include <string>
 
-typedef std::bitset<256> hash256_t;
-typedef std::bitset<16> hash16_t;
+typedef std::bitset<256> hash_t;
 
 class SHA256 {
    public:
-    SHA256();
-
-    // Hash a string
-    void update(const uint8_t* data, size_t length);
-    void update(const std::string& data);
+    SHA256(const std::string& data);
+    SHA256(const uint8_t* data, size_t length);
 
     // Get the hash
-    hash256_t digest();
-    hash16_t head(uint8_t length);
+    hash_t digest();
+    hash_t head(uint8_t length);
     std::string hexdigest();
 
    private:
@@ -49,6 +44,4 @@ class SHA256 {
     void transform();
     void pad();
     void revert();
-};
-
-#endif
+    };

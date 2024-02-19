@@ -7,7 +7,9 @@
 
 constexpr std::array<uint32_t, 64> SHA256::K;
 
-SHA256::SHA256() : m_blocklen(0), m_bitlen(0) {
+SHA256::SHA256(const std::string& data) : SHA256(reinterpret_cast<const uint8_t*>(data.c_str()), data.size()) {}
+
+SHA256::SHA256(const uint8_t* data, size_t length) : m_bitlen(0), m_blocklen(0) {
     m_state[0] = 0x6a09e667;
     m_state[1] = 0xbb67ae85;
     m_state[2] = 0x3c6ef372;
@@ -16,9 +18,7 @@ SHA256::SHA256() : m_blocklen(0), m_bitlen(0) {
     m_state[5] = 0x9b05688c;
     m_state[6] = 0x1f83d9ab;
     m_state[7] = 0x5be0cd19;
-}
 
-void SHA256::update(const uint8_t* data, size_t length) {
     for (size_t i = 0; i < length; i++) {
         m_data[m_blocklen++] = data[i];
         if (m_blocklen == 64) {
@@ -33,8 +33,6 @@ void SHA256::update(const uint8_t* data, size_t length) {
     pad();
     revert();
 }
-
-void SHA256::update(const std::string& data) { update(reinterpret_cast<const uint8_t*>(data.c_str()), data.size()); }
 
 uint32_t SHA256::rotr(uint32_t x, uint32_t n) { return (x >> n) | (x << (32 - n)); }
 
@@ -126,25 +124,23 @@ void SHA256::revert() {
     }
 }
 
-hash256_t SHA256::digest() {
-    hash256_t hash;
+// getters
+
+hash_t SHA256::digest() {
+    hash_t hash;
 
     for (int i = 0; i < 32; i++) {
         hash <<= 8;
-        hash256_t byte = (unsigned long)result[i];
+        hash_t byte = (unsigned long)result[i];
         hash |= byte;
     }
 
     return hash;
 }
 
-hash16_t SHA256::head(uint8_t length) {
-    hash16_t mask = (1 << length) - 1;
-    hash16_t hash = result[0];
-    
-    hash <<= 8;
-    hash |= result[1];
-    return hash & mask;
+hash_t SHA256::head(uint8_t length) {
+    hash_t mask = (1 << length) - 1;
+    return mask & digest();
 }
 
 std::string SHA256::hexdigest() {

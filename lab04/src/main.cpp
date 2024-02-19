@@ -6,9 +6,8 @@
 
 int main(int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
-        SHA256 sha;
-        sha.update(argv[i]);
-        std::cout << sha.hexdigest() << " - " << argv[i] << std::endl;
+        std::string hash = SHA256(argv[i]).hexdigest();
+        std::cout << hash << " - " << argv[i] << std::endl;
     }
 
     return EXIT_SUCCESS;
