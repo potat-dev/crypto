@@ -1,3 +1,5 @@
+#include <matplot/matplot.h>
+
 #include <cstdlib>
 #include <iostream>
 #include <numeric>
@@ -21,11 +23,38 @@ std::string get_rand_pass() {
     return password;
 }
 
+uint64_t find_first_collision(const std::vector<hash_t>& arr) {
+    for (int i = 0; i < arr.size(); i++) {
+        for (int j = i + 1; j < arr.size(); j++) {
+            if (arr[i] == arr[j]) {
+                return (2 * (arr.size() - 1) - i) * i / 2 + (j - i);  // instead of count...
+            }
+        }
+    }
+
+    return arr.size() * arr.size();  // no collisions
+}
+
+void graph(std::vector<std::vector<uint64_t>> arrN, std::vector<std::vector<uint64_t>> arrS,
+           std::vector<std::string> labels) {
+    std::vector<uint8_t> hash_bits{8, 10, 12, 14, 16};
+    std::vector<int> N = {277, 1070, 4221, 15957, 71967};
+    std::vector<int> S = {224, 964, 3767, 14567, 57715};
+
+    matplot::semilogy(hash_bits, N, "m--o", hash_bits, S, "c--o");
+    // matplot::show();
+    matplot::save("test.png");
+}
+
 int main(int argc, char** argv) {
     std::srand(42);
 
     std::vector<std::string> passwords{"hello", "world", "\x00"};
-    std::vector<uint8_t> hash_bits{8, 10, 12, 14, 16 /**/};
+    std::vector<uint8_t> hash_bits{8, 10, 12, 14, 16};
+
+    // arrays of results - arr[pass][bits]
+    std::vector<std::vector<uint64_t>> avgN_arr(passwords.size(), std::vector<uint64_t>(hash_bits.size()));
+    std::vector<std::vector<uint64_t>> avgS_arr(passwords.size(), std::vector<uint64_t>(hash_bits.size()));
 
     for (uint8_t bits : hash_bits) {
         std::cout << "Testing collisions for first " << (unsigned int)bits << " bits" << std::endl;
@@ -51,19 +80,7 @@ int main(int argc, char** argv) {
                     }
                 }
 
-                for (int i = 0; i < hashes.size(); i++) {
-                    bool found = false;
-
-                    for (int j = i + 1; j < hashes.size(); j++) {
-                        if (hashes[i] == hashes[j]) {
-                            arrS[iter] = (2 * (hashes.size() - 1) - i) * i / 2 + (j - i);  // instead of count...
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (found) break;
-                }
+                arrS[iter] = find_first_collision(hashes);
             }
 
             auto avgN = std::reduce(arrN.begin(), arrN.end()) / ITERS;
