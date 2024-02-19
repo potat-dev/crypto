@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     std::srand(42);
 
     std::vector<std::string> passwords{"hello", "world", "\x00"};
-    std::vector<uint8_t> hash_bits{8, 10, /*12, 14, 16*/};
+    std::vector<uint8_t> hash_bits{8, 10, 12, 14, 16 /**/};
 
     for (uint8_t bits : hash_bits) {
         std::cout << "Testing collisions for first " << (unsigned int)bits << " bits" << std::endl;
@@ -35,8 +35,9 @@ int main(int argc, char** argv) {
             hash_t pass_hash = SHA256(pass).head(bits);
 
             std::vector<uint64_t> arrN(ITERS);
+            std::vector<uint64_t> arrS(ITERS);
 
-            for (int i = 0; i < ITERS; i++) {
+            for (int iter = 0; iter < ITERS; iter++) {
                 std::vector<hash_t> hashes;  // "y1..yN" array
 
                 while (true) {
@@ -45,20 +46,31 @@ int main(int argc, char** argv) {
 
                     hashes.push_back(rand_hash);
                     if (rand_hash == pass_hash) {
-                        // std::cout << "Found collision: '" << rand_pass << "'" << std::endl;
-                        // std::cout << "Hashes: " << hashes.size() << std::endl;
-                        arrN[i] = hashes.size();
+                        arrN[iter] = hashes.size();
                         break;
                     }
                 }
+
+                for (int i = 0; i < hashes.size(); i++) {
+                    bool found = false;
+
+                    for (int j = i + 1; j < hashes.size(); j++) {
+                        if (hashes[i] == hashes[j]) {
+                            arrS[iter] = (2 * (hashes.size() - 1) - i) * i / 2 + (j - i);  // instead of count...
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found) break;
+                }
             }
 
-            auto avg = std::reduce(arrN.begin(), arrN.end()) / arrN.size();
-            std::cout << "Average collision in: " << avg << " hashes" << std::endl;
-
-            // std::cout << "Hash: " << sha.hexdigest() << std::endl;
-            // std::cout << "Hash: " << sha.digest() << std::endl;
-            // std::cout << "Head: " << sha.head(bits) << std::endl;
+            auto avgN = std::reduce(arrN.begin(), arrN.end()) / ITERS;
+            auto avgS = std::reduce(arrS.begin(), arrS.end()) / ITERS;
+            std::cout << "Average N: " << avgN << ", Average S: " << avgS << std::endl;
         }
+
+        std::cout << std::endl;
     }
 }
