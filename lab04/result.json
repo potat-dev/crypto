@@ -160,5 +160,131 @@
     "avgS": 3902,
     "bits": 12,
     "pass": ""
+  },
+  {
+    "avgN": 7667,
+    "avgS": 8196,
+    "bits": 13,
+    "pass": "hello"
+  },
+  {
+    "avgN": 8795,
+    "avgS": 7730,
+    "bits": 13,
+    "pass": "world"
+  },
+  {
+    "avgN": 8418,
+    "avgS": 7787,
+    "bits": 13,
+    "pass": ""
+  },
+  {
+    "avgN": 15519,
+    "avgS": 16434,
+    "bits": 14,
+    "pass": "hello"
+  },
+  {
+    "avgN": 17570,
+    "avgS": 16017,
+    "bits": 14,
+    "pass": "world"
+  },
+  {
+    "avgN": 17453,
+    "avgS": 15786,
+    "bits": 14,
+    "pass": ""
+  },
+  {
+    "avgN": 36539,
+    "avgS": 29906,
+    "bits": 15,
+    "pass": "hello"
+  },
+  {
+    "avgN": 35494,
+    "avgS": 29493,
+    "bits": 15,
+    "pass": "world"
+  },
+  {
+    "avgN": 35022,
+    "avgS": 30472,
+    "bits": 15,
+    "pass": ""
+  },
+  {
+    "avgN": 72165,
+    "avgS": 61347,
+    "bits": 16,
+    "pass": "hello"
+  },
+  {
+    "avgN": 68061,
+    "avgS": 59183,
+    "bits": 16,
+    "pass": "world"
+  },
+  {
+    "avgN": 71332,
+    "avgS": 66103,
+    "bits": 16,
+    "pass": ""
+  },
+  {
+    "avgN": 140222,
+    "avgS": 115967,
+    "bits": 17,
+    "pass": "hello"
+  },
+  {
+    "avgN": 141898,
+    "avgS": 117627,
+    "bits": 17,
+    "pass": "world"
+  },
+  {
+    "avgN": 137603,
+    "avgS": 120240,
+    "bits": 17,
+    "pass": ""
+  },
+  {
+    "avgN": 282597,
+    "avgS": 235621,
+    "bits": 18,
+    "pass": "hello"
+  },
+  {
+    "avgN": 283325,
+    "avgS": 246525,
+    "bits": 18,
+    "pass": "world"
+  },
+  {
+    "avgN": 278193,
+    "avgS": 241074,
+    "bits": 18,
+    "pass": ""
+  },
+  {
+    "avgN": 551327,
+    "avgS": 485478,
+    "bits": 19,
+    "pass": "hello"
+  },
+  {
+    "avgN": 557996,
+    "avgS": 458696,
+    "bits": 19,
+    "pass": "world"
+  },
+  {
+    "avgN": 553422,
+    "avgS": 462355,
+    "bits": 19,
+    "pass": ""
   }
 ]
