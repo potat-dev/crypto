@@ -1,0 +1,164 @@
+[
+  {
+    "avgN": 16,
+    "avgS": 14,
+    "bits": 4,
+    "pass": "hello"
+  },
+  {
+    "avgN": 15,
+    "avgS": 13,
+    "bits": 4,
+    "pass": "world"
+  },
+  {
+    "avgN": 16,
+    "avgS": 13,
+    "bits": 4,
+    "pass": ""
+  },
+  {
+    "avgN": 31,
+    "avgS": 28,
+    "bits": 5,
+    "pass": "hello"
+  },
+  {
+    "avgN": 31,
+    "avgS": 28,
+    "bits": 5,
+    "pass": "world"
+  },
+  {
+    "avgN": 31,
+    "avgS": 27,
+    "bits": 5,
+    "pass": ""
+  },
+  {
+    "avgN": 61,
+    "avgS": 59,
+    "bits": 6,
+    "pass": "hello"
+  },
+  {
+    "avgN": 63,
+    "avgS": 57,
+    "bits": 6,
+    "pass": "world"
+  },
+  {
+    "avgN": 63,
+    "avgS": 60,
+    "bits": 6,
+    "pass": ""
+  },
+  {
+    "avgN": 135,
+    "avgS": 116,
+    "bits": 7,
+    "pass": "hello"
+  },
+  {
+    "avgN": 126,
+    "avgS": 122,
+    "bits": 7,
+    "pass": "world"
+  },
+  {
+    "avgN": 131,
+    "avgS": 116,
+    "bits": 7,
+    "pass": ""
+  },
+  {
+    "avgN": 270,
+    "avgS": 238,
+    "bits": 8,
+    "pass": "hello"
+  },
+  {
+    "avgN": 250,
+    "avgS": 245,
+    "bits": 8,
+    "pass": "world"
+  },
+  {
+    "avgN": 264,
+    "avgS": 240,
+    "bits": 8,
+    "pass": ""
+  },
+  {
+    "avgN": 514,
+    "avgS": 490,
+    "bits": 9,
+    "pass": "hello"
+  },
+  {
+    "avgN": 453,
+    "avgS": 513,
+    "bits": 9,
+    "pass": "world"
+  },
+  {
+    "avgN": 505,
+    "avgS": 490,
+    "bits": 9,
+    "pass": ""
+  },
+  {
+    "avgN": 1012,
+    "avgS": 962,
+    "bits": 10,
+    "pass": "hello"
+  },
+  {
+    "avgN": 822,
+    "avgS": 1012,
+    "bits": 10,
+    "pass": "world"
+  },
+  {
+    "avgN": 940,
+    "avgS": 966,
+    "bits": 10,
+    "pass": ""
+  },
+  {
+    "avgN": 2159,
+    "avgS": 1956,
+    "bits": 11,
+    "pass": "hello"
+  },
+  {
+    "avgN": 2144,
+    "avgS": 2103,
+    "bits": 11,
+    "pass": "world"
+  },
+  {
+    "avgN": 1983,
+    "avgS": 2000,
+    "bits": 11,
+    "pass": ""
+  },
+  {
+    "avgN": 4254,
+    "avgS": 3993,
+    "bits": 12,
+    "pass": "hello"
+  },
+  {
+    "avgN": 4110,
+    "avgS": 4036,
+    "bits": 12,
+    "pass": "world"
+  },
+  {
+    "avgN": 4132,
+    "avgS": 3902,
+    "bits": 12,
+    "pass": ""
+  }
+]

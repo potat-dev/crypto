@@ -9,15 +9,11 @@ constexpr std::array<uint32_t, 64> SHA256::K;
 
 SHA256::SHA256(const std::string& data) : SHA256(reinterpret_cast<const uint8_t*>(data.c_str()), data.size()) {}
 
-SHA256::SHA256(const uint8_t* data, size_t length) : m_bitlen(0), m_blocklen(0) {
-    m_state[0] = 0x6a09e667;
-    m_state[1] = 0xbb67ae85;
-    m_state[2] = 0x3c6ef372;
-    m_state[3] = 0xa54ff53a;
-    m_state[4] = 0x510e527f;
-    m_state[5] = 0x9b05688c;
-    m_state[6] = 0x1f83d9ab;
-    m_state[7] = 0x5be0cd19;
+SHA256::SHA256(const uint8_t* data, size_t length)
+    : m_bitlen(0),
+      m_blocklen(0),
+      m_state{0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19} {
+    // init some magic variables in constructor
 
     for (size_t i = 0; i < length; i++) {
         m_data[m_blocklen++] = data[i];
@@ -31,7 +27,14 @@ SHA256::SHA256(const uint8_t* data, size_t length) : m_bitlen(0), m_blocklen(0) 
     }
 
     pad();
-    revert();
+
+    // SHA uses big endian byte ordering
+    // Revert all bytes
+    for (uint8_t i = 0; i < 4; i++) {
+        for (uint8_t j = 0; j < 8; j++) {
+            result[i + (j * 4)] = (m_state[j] >> (24 - i * 8)) & 0x000000ff;
+        }
+    }
 }
 
 uint32_t SHA256::rotr(uint32_t x, uint32_t n) { return (x >> n) | (x << (32 - n)); }
@@ -48,11 +51,13 @@ void SHA256::transform() {
     uint32_t maj, xorA, ch, xorE, sum, newA, newE, m[64];
     uint32_t state[8];
 
-    for (uint8_t i = 0, j = 0; i < 16; i++, j += 4) {  // Split data in 32 bit blocks for the 16 first words
+    // Split data in 32 bit blocks for the 16 first words
+    for (uint8_t i = 0, j = 0; i < 16; i++, j += 4) {
         m[i] = (m_data[j] << 24) | (m_data[j + 1] << 16) | (m_data[j + 2] << 8) | (m_data[j + 3]);
     }
 
-    for (uint8_t k = 16; k < 64; k++) {  // Remaining 48 blocks
+    // Remaining 48 blocks
+    for (uint8_t k = 16; k < 64; k++) {
         m[k] = SHA256::sig1(m[k - 2]) + m[k - 7] + SHA256::sig0(m[k - 15]) + m[k - 16];
     }
 
@@ -93,7 +98,7 @@ void SHA256::pad() {
 
     m_data[i++] = 0x80;  // Append a bit 1
     while (i < end) {
-        m_data[i++] = 0x00;  // Pad with zeros
+        m_data[i++] = 0x00;
     }
 
     if (m_blocklen >= 56) {
@@ -112,16 +117,6 @@ void SHA256::pad() {
     m_data[57] = m_bitlen >> 48;
     m_data[56] = m_bitlen >> 56;
     transform();
-}
-
-void SHA256::revert() {
-    // SHA uses big endian byte ordering
-    // Revert all bytes
-    for (uint8_t i = 0; i < 4; i++) {
-        for (uint8_t j = 0; j < 8; j++) {
-            result[i + (j * 4)] = (m_state[j] >> (24 - i * 8)) & 0x000000ff;
-        }
-    }
 }
 
 // getters

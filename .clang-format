@@ -1,9 +1,9 @@
 ---
 BasedOnStyle: Google
-IndentWidth: 4
-TabWidth: 4
-UseTab: Never
 ColumnLimit: 120
+IndentWidth: 4
+UseTab: Never
+TabWidth: 4
 PointerAlignment: Left
 DerivePointerAlignment: false
 

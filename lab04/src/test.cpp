@@ -1,6 +1,7 @@
-#include <matplot/matplot.h>
+#include <nlohmann/json.hpp>
 
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <numeric>
 #include <string>
@@ -35,26 +36,14 @@ uint64_t find_first_collision(const std::vector<hash_t>& arr) {
     return arr.size() * arr.size();  // no collisions
 }
 
-void graph(std::vector<std::vector<uint64_t>> arrN, std::vector<std::vector<uint64_t>> arrS,
-           std::vector<std::string> labels) {
-    std::vector<uint8_t> hash_bits{8, 10, 12, 14, 16};
-    std::vector<int> N = {277, 1070, 4221, 15957, 71967};
-    std::vector<int> S = {224, 964, 3767, 14567, 57715};
-
-    matplot::semilogy(hash_bits, N, "m--o", hash_bits, S, "c--o");
-    // matplot::show();
-    matplot::save("test.png");
-}
-
 int main(int argc, char** argv) {
     std::srand(42);
 
-    std::vector<std::string> passwords{"hello", "world", "\x00"};
-    std::vector<uint8_t> hash_bits{8, 10, 12, 14, 16};
+    nlohmann::json results = nlohmann::json::array();
 
-    // arrays of results - arr[pass][bits]
-    std::vector<std::vector<uint64_t>> avgN_arr(passwords.size(), std::vector<uint64_t>(hash_bits.size()));
-    std::vector<std::vector<uint64_t>> avgS_arr(passwords.size(), std::vector<uint64_t>(hash_bits.size()));
+    std::vector<std::string> passwords{"hello", "world", "\x00"};
+    std::vector<uint8_t> hash_bits{4, 5, 6, 7, 8, 9, 10, 11, 12};
+    // std::vector<uint8_t> hash_bits{8, 10, 12, 14, 16};
 
     for (uint8_t bits : hash_bits) {
         std::cout << "Testing collisions for first " << (unsigned int)bits << " bits" << std::endl;
@@ -85,9 +74,16 @@ int main(int argc, char** argv) {
 
             auto avgN = std::reduce(arrN.begin(), arrN.end()) / ITERS;
             auto avgS = std::reduce(arrS.begin(), arrS.end()) / ITERS;
+
+            nlohmann::json result{{"pass", pass}, {"bits", bits}, {"avgN", avgN}, {"avgS", avgS}};
+            results.push_back(result);
+
             std::cout << "Average N: " << avgN << ", Average S: " << avgS << std::endl;
         }
 
         std::cout << std::endl;
     }
+
+    std::ofstream file("result.json");
+    file << std::setw(2) << results << std::endl;
 }
