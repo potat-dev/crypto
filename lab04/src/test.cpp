@@ -42,8 +42,8 @@ int main(int argc, char** argv) {
     nlohmann::json results = nlohmann::json::array();
 
     std::vector<std::string> passwords{"hello", "world", "\x00"};
-    std::vector<uint8_t> hash_bits{4, 5, 6, 7, 8, 9, 10, 11, 12};
-    // std::vector<uint8_t> hash_bits{8, 10, 12, 14, 16};
+    std::vector<uint8_t> hash_bits{4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+    // std::vector<uint8_t> hash_bits{4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 
     for (uint8_t bits : hash_bits) {
         std::cout << "Testing collisions for first " << (unsigned int)bits << " bits" << std::endl;
@@ -78,12 +78,13 @@ int main(int argc, char** argv) {
             nlohmann::json result{{"pass", pass}, {"bits", bits}, {"avgN", avgN}, {"avgS", avgS}};
             results.push_back(result);
 
+            std::ofstream file("result.json");
+            file << std::setw(2) << results << std::endl;
+            file.close();
+
             std::cout << "Average N: " << avgN << ", Average S: " << avgS << std::endl;
         }
 
         std::cout << std::endl;
     }
-
-    std::ofstream file("result.json");
-    file << std::setw(2) << results << std::endl;
 }
