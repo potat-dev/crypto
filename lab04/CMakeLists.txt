@@ -10,17 +10,17 @@ file(DOWNLOAD
 
 include(${CMAKE_CURRENT_BINARY_DIR}/cmake/CPM.cmake)
 
-# main
+# test
+
+project(sha256_test)
+
+add_executable(sha256_test src/test.cpp src/sha256.cpp)
+
+# lab
 
 project(sha256)
 
-add_executable(sha256 src/main.cpp src/sha256.cpp)
-
-# test
-
-project(sha256-Test)
-
-add_executable(sha256_test src/test.cpp src/sha256.cpp)
+add_executable(sha256 src/lab.cpp src/sha256.cpp)
 
 cpmaddpackage(NAME json GITHUB_REPOSITORY nlohmann/json VERSION 3.11.3)
 
